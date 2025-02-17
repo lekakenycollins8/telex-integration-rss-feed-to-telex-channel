@@ -12,7 +12,7 @@ const config = {
             category: 'Finance'
         },
         {
-            url: 'https://www.wired.com/category/security/feed',
+            url: 'https://krebsonsecurity.com/feed/',
             category: 'Cybersecurity'
         }
     ],
