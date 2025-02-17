@@ -1,6 +1,6 @@
 const Parser = require('rss-parser');
 const axios = require('axios');
-const { text } = require('express');
+const { retry } = require('./utils/retry');
 
 class RSSFetcher {
     constructor(config) {
@@ -24,7 +24,16 @@ class RSSFetcher {
 
     async fetchSingleFeed(feed) {
         try {
-            const feedContent = await this.parser.parseURL(feed.url);
+            const feedContent = await retry(() => this.parser.parseURL(feed.url), {
+                maxAttempts: 3,
+                delay: 1000,
+                shouldRetry: (error) => {
+                    return error.code === 'ECONNRESET' ||
+                        error.code === 'ETIMEDOUT' || 
+                        (error.response && error.response.status >= 500);
+                }
+            });
+
             const lastFetchedGuid = this.lastFetchedItems.get(feed.url);
 
             const newItems = feedContent.items
@@ -62,14 +71,25 @@ class RSSFetcher {
 
     async sendToTelex(message) {
         try {
-            const response = await axios.post(`https://api.staging.telex.im/api/v1/${this.channelId}/messages`, {
-                text: message
-            }, {
-                headers: {
-                    'Authorization': `Bearer ${this.telexToken}`,
-                    'Content-Type': 'application/json',
+            const response = await retry(
+                () => axios.post(`https://api.staging.telex.im/api/v1/${this.channelId}/messages`, {
+                    text: message
+                }, {
+                    headers: {
+                        'Authorization': `Bearer ${this.telexToken}`,
+                        'Content-Type': 'application/json',
+                    }
+                }),
+                {
+                    maxAttempts: 3,
+                    delay: 1000,
+                    shouldRetry: (error) => {
+                        return error.code === 'ECONNRESET' ||
+                            error.code === 'ETIMEDOUT' || 
+                            (error.response && error.response.status >= 500);
+                    }
                 }
-            });
+            );
             return response.data;
         } catch (error) {
             console.error("Error sending message to Telex", error);
