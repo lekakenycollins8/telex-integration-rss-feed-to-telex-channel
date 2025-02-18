@@ -1,63 +1,34 @@
-const RSSFetcher = require('./RSSFetcher');
-const config = require('./config');
+const express = require('express');
+const { WebhookRSSIntegration } = require('./WebhookRSSIntegration');
+const integrationSpecs = require('./integration-spec');
 
-class TelexRSSIntegration {
-    constructor() {
-        this.rssFetcher = new RSSFetcher(config);
-        this.interval = null;
+const app = express();
+const port = process.env.PORT || 3000;
+const integration = new WebhookRSSIntegration();
+
+app.use(express.json());
+
+// Endpoint to manually trigger feed fetching and sending
+app.post('/tick', async (req, res) => {
+    try {
+        await integration.fetchAndSend();
+        res.json({ status: 'success', message: 'Feeds fetched and sent successfully' });
+    } catch (error) {
+        console.error('Error in /tick:', error);
+        res.status(500).json({ status: 'error', message: 'Failed to fetch and send feeds' });
     }
+});
 
-    async start() {
-        console.log('Starting Telex RSS Integration...');
+// Endpoint to retrieve integration configuration
+app.get('/integration', (req, res) => {
+    res.json(integrationSpecs);
+});
 
-        // initial fetch
-        await this.fetchAndSend();
-
-        // setup interval to fetch feeds
-        this.interval = setInterval(
-            () => this.fetchAndSend(),
-            config.updateInterval
-        );
-    }
-
-    async fetchAndSend() {
-        try {
-            const feedItems = await this.rssFetcher.fetchFeeds();
-
-            for (const item of feedItems) {
-                await this.rssFetcher.sendToTelex(item.formattedMessage);
-                // Add a small delay between messages to avoid rate limiting
-                await new Promise(resolve => setTimeout(resolve, 1000));
-            }
-        } catch (error) {
-            console.error('Error fetching and sending cycles', error);
-        }
-    }
-
-    stop() {
-        if (this.interval) {
-            clearInterval(this.interval);
-            this.interval = null;
-            console.log('Telex RSS Integration stopped');
-        }
-    }
-}
-
-// Start the integration
-const integration = new TelexRSSIntegration();
+// Start the integration service
 integration.start().catch(error => {
-    console.error('Error starting integration', error);
+    console.error('Error starting integration:', error);
 });
 
-// Handle graceful shutdown
-process.on('SIGTERM', () => {
-    console.log('Received SIGTERM, stopping Telex RSS Integration...');
-    integration.stop();
-    process.exit(0);
-});
-
-process.on('SIGINT', () => {
-    console.log('Received SIGINT, stopping Telex RSS Integration...');
-    integration.stop();
-    process.exit(0);
+app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
 });
