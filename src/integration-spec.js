@@ -84,7 +84,7 @@ const integrationSpecs = {
           description: "Username to be included in the webhook payload."
         }
       ],
-      target_url: "https://telex-integration-rss-feed-to-telex.onrender.com/",
+      target_url: "",
       tick_url: "https://telex-integration-rss-feed-to-telex.onrender.com/tick",
     }
   };
