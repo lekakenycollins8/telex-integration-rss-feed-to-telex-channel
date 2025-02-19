@@ -77,7 +77,7 @@ class WebhookRSSFetcher {
         try {
             const feedContent = await retry(() => this.parser.parseURL(feed.url), {
                 maxAttempts: 3,
-                delay: 1000,
+                delay: 10000,
                 shouldRetry: (error) => {
                     console.log("Feed fetch error:", error);
                     return error.code === 'ECONNRESET' ||
@@ -129,7 +129,7 @@ class WebhookRSSFetcher {
                 ),
                 {
                     maxAttempts: 3,
-                    delay: 2000,
+                    delay: 200000,
                     shouldRetry: (error) => {
                         console.log("Webhook Error Details:", {
                             status: error.response?.status,
