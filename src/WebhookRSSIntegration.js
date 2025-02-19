@@ -77,7 +77,7 @@ class WebhookRSSFetcher {
         try {
             const feedContent = await retry(() => this.parser.parseURL(feed.url), {
                 maxAttempts: 3,
-                delay: 1000000,
+                delay: 10000,
                 shouldRetry: (error) => {
                     console.log("Feed fetch error:", error);
                     return error.code === 'ECONNRESET' ||
