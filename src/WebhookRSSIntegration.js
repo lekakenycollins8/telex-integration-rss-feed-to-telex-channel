@@ -77,7 +77,7 @@ class WebhookRSSFetcher {
         try {
             const feedContent = await retry(() => this.parser.parseURL(feed.url), {
                 maxAttempts: 3,
-                delay: 10000,
+                delay: 1000000,
                 shouldRetry: (error) => {
                     console.log("Feed fetch error:", error);
                     return error.code === 'ECONNRESET' ||
@@ -129,7 +129,7 @@ class WebhookRSSFetcher {
                 ),
                 {
                     maxAttempts: 3,
-                    delay: 200000,
+                    delay: 2000000,
                     shouldRetry: (error) => {
                         console.log("Webhook Error Details:", {
                             status: error.response?.status,
@@ -252,7 +252,7 @@ class WebhookRSSIntegration {
                     await this.rssFetcher.sendToWebhook(item.formattedMessage);
                     console.log('Successfully sent message:', item.title);
                     
-                    await new Promise(resolve => setTimeout(resolve, 10000));
+                    await new Promise(resolve => setTimeout(resolve, 1000000));
                 } catch (error) {
                     console.error('Error sending individual message:', error);
                     continue;

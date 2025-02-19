@@ -7,7 +7,7 @@ const integrationSpecs = {
       descriptions: {
         app_name: "Webhook RSS Feed Integration",
         app_description: "Interval integration that fetches RSS feeds from TechCrunch, Wired, and Krebs on Security every 30 minutes and posts formatted updates via webhook to a Telex channel.",
-        app_url: "https://example.com/webhook-rss-integration",
+        app_url: "https://telex-integration-rss-feed-to-telex.onrender.com/",
         app_logo: "https://media-hosting.imagekit.io//ed02bd5dbfcb4c7f/giddy.jpg?Expires=1831556093&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=yZzLY5rN~NSQaMRCsohy~tBswJrVgMAWJXc~6m9CFuHz7Gp6QIhYoFToleoWlr5WPu-12RyteB4zmjY9dzRsOhLTzp6uX96wsZ2FBP8N0ketouw2lOoVgBqDhP1ezfWh0Tiqabtx9Nj-GtDGHAOvKb-BqscrKLvhQOIMoFNfk~z4eXRV6-FSG2rS573mMZ4QKCfZamjTQVIQF7vegHVSwj2z0oS~JNnpCKqCY8XHXh7lhpG0tlqbuXrsCXFcKM0UpZBiqW9xz3FsliXOfvyw4TLSQzz65-UnqXZSZ-ZZHp3B9iQpmjGbIuNUwA0c~VqVGmyLPTC9c~IKzFB~m8OpOw__",
         background_color: "#123456"
       },
