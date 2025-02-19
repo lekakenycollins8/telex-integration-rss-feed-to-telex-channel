@@ -13,7 +13,7 @@ const integrationSpecs = {
       },
       integration_category: "Monitoring & Logging",
       integration_type: "interval",
-      is_active: false,
+      is_active: true,
       output: [
         {
           label: "output_channel_1",
@@ -45,7 +45,7 @@ const integrationSpecs = {
           description: "Cron expression defining how often the integration runs."
         },
         {
-          label: "Webhook URL",
+          label: "webhookURL",
           type: "text",
           required: true,
           default: "https://ping.telex.im/v1/webhooks/019513df-f990-7957-a978-b7601584d872",
@@ -63,21 +63,21 @@ const integrationSpecs = {
           description: "JSON string of feed objects with their URLs and categories."
         },
         {
-          label: "Event Name",
+          label: "eventName",
           type: "text",
           required: true,
           default: "rss_update",
           description: "Event name to be sent in the webhook payload."
         },
         {
-          label: "Status",
+          label: "status",
           type: "text",
           required: true,
           default: "success",
           description: "Status indicator sent in the webhook payload."
         },
         {
-          label: "Username",
+          label: "username",
           type: "text",
           required: true,
           default: "collins",
@@ -85,7 +85,6 @@ const integrationSpecs = {
         }
       ],
       tick_url: "https://telex-integration-rss-feed-to-telex.onrender.com/tick",
-      target_url: ""
     }
   };
   

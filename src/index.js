@@ -20,7 +20,7 @@ app.post('/tick', async (req, res) => {
 });
 
 // Endpoint to retrieve integration configuration
-app.get('/integration', (req, res) => {
+app.get('/integration.json', (req, res) => {
     res.json(integrationSpecs);
 });
 
