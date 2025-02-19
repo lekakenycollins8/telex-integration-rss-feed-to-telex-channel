@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const { WebhookRSSIntegration } = require('./WebhookRSSIntegration');
 const integrationSpecs = require('./integration-spec');
 
@@ -6,7 +7,9 @@ const app = express();
 const port = process.env.PORT || 3000;
 const integration = new WebhookRSSIntegration();
 
+app.use(cors());
 app.use(express.json());
+
 
 // Endpoint to manually trigger feed fetching and sending
 app.post('/tick', async (req, res) => {
