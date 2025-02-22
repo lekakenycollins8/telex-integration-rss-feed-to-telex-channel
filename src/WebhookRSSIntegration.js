@@ -218,7 +218,7 @@ const config = {
         }
     ],
     updateInterval: process.env.UPDATE_INTERVAL || 1800000,
-    webhookUrl: 'https://ping.telex.im/v1/webhooks/019513df-f990-7957-a978-b7601584d872'
+    webhookUrl: 'https://ping.telex.im/v1/webhooks/01952f10-e286-793e-8a86-5f9b8ab0d45d'
 };
 
 // Integration class
